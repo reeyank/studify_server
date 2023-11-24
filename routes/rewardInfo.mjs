@@ -2,19 +2,19 @@ import express from "express";
 import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 
-const appInfo = express.Router();
+const router = express.Router();
 
 // This section will help you get a list of all the records.
-appInfo.get("/", async (req, res) => {
-  let collection = await db.collection("appInfo");
+router.get("/", async (req, res) => {
+  let collection = await db.collection("userInfo");
   let results = await collection.find({}).toArray();
   res.send(results).status(200);
 });
 
 // This section will help you get a single record by id
-appInfo.get("/:id", async (req, res) => {
-  let collection = await db.collection("records");
-  let query = {_id: new ObjectId(req.params.id)};
+router.get("/:uid", async (req, res) => {
+  let collection = await db.collection("userInfo");
+  let query = {uid: req.params.uid};
   let result = await collection.findOne(query);
 
   if (!result) res.send("Not found").status(404);
@@ -22,7 +22,7 @@ appInfo.get("/:id", async (req, res) => {
 });
 
 // This section will help you create a new record.
-appInfo.post("/", async (req, res) => {
+router.post("/", async (req, res) => {
   let newDocument = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -36,7 +36,7 @@ appInfo.post("/", async (req, res) => {
 });
 
 // This section will help you update a record by id.
-appInfo.patch("/:id", async (req, res) => {
+router.patch("/:id", async (req, res) => {
   const query = { _id: new ObjectId(req.params.id) };
   const updates =  {
     $set: {
@@ -53,7 +53,7 @@ appInfo.patch("/:id", async (req, res) => {
 });
 
 // This section will help you delete a record
-appInfo.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const query = { _id: new ObjectId(req.params.id) };
 
   const collection = db.collection("records");
@@ -62,4 +62,4 @@ appInfo.delete("/:id", async (req, res) => {
   res.send(result).status(200);
 });
 
-export default appInfo;
+export default router;

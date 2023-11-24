@@ -12,9 +12,9 @@ router.get("/", async (req, res) => {
 });
 
 // This section will help you get a single record by id
-router.get("/:id", async (req, res) => {
-  let collection = await db.collection("records");
-  let query = {_id: new ObjectId(req.params.id)};
+router.get("/:uid", async (req, res) => {
+  let collection = await db.collection("userInfo");
+  let query = {uid: req.params.uid};
   let result = await collection.findOne(query);
 
   if (!result) res.send("Not found").status(404);
