@@ -56,7 +56,7 @@ router.post("/", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   const query = { _id: new ObjectId(req.params.id) };
 
-  const collection = db.collection("records");
+  const collection = db.collection("userInfo");
   let result = await collection.deleteOne(query);
 
   res.send(result).status(200);
